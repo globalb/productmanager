@@ -1,0 +1,43 @@
+<modification>
+	<name>ProductManager by iSenseLabs</name>
+	<version>3.0.0</version>
+	<link>http://isenselabs.com</link>
+	<author>iSenseLabs</author>
+	<code>isenselabs_productmanager</code>
+  
+	<file path="admin/view/template/common/menu.tpl">
+		<operation>
+			<search><![CDATA[<li><a href="<?php echo $product; ?>"><?php echo $text_product; ?></a></li>]]></search>
+			<add position="after"><![CDATA[<li><a href="<?php echo $productmanager_link; ?>"><?php echo $productmanager; ?></a></li>]]></add>
+		</operation>
+	</file>
+  	
+	<file path="admin/controller/common/column_left.php">  
+  		<operation>
+			<search><![CDATA[if ($this->user->hasPermission('access', 'catalog/recurring')) {]]></search>
+			<add position="before"><![CDATA[			
+            /* ProductManager - Begin */
+			$this->language->load('extension/module/productmanager');
+
+			$catalog[] = array(
+				'id'       => 'menu-productmanager',
+				'icon'	   => 'fa fa-shopping-cart fa-fw', 
+				'name'	   => $this->language->get('heading_title'),
+				'href'     => $this->url->link('extension/module/productmanager', 'token=' . $this->session->data['token'], true),
+				'children' => array()
+			);	
+            /* ProductManager - End */
+			]]></add>
+		</operation>
+	</file>
+
+    <file path="admin/controller/common/menu.php">
+		<operation>
+			<search><![CDATA[$data['order_recurring'] = $this->url->link('sale/recurring', 'token=' . $this->session->data['token'],]]></search>
+			<add position="before"><![CDATA[
+			$data['productmanager_link'] = $this->url->link('catalog/productmanager', 'token=' . $this->session->data['token'], 'SSL');
+			]]></add>
+		</operation>
+	</file>
+  
+</modification>
